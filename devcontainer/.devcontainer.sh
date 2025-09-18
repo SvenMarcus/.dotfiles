@@ -29,31 +29,13 @@ dcup-nvim() {
 
 	# Rebuild devcontainer with Neovim and Node features only
 	devcontainer up --workspace-folder "$workspace" --remove-existing-container \
+		--dotfiles-repository "https://github.com/SvenMarcus/.dotfiles" \
+		--dotfiles-target-path "~/.dotfiles" \
 		--additional-features '{
       "ghcr.io/duduribeiro/devcontainer-features/neovim:1": {},
       "ghcr.io/devcontainers/features/node:1": {}
     }' \
-		--mount "type=bind,source=$nvim_config,target=/home/dev-user/.config/nvim"
-
-	# Install build tools, fzf, fd, ripgrep via package manager
-	devcontainer exec --workspace-folder "$workspace" -- sh -c '
-    if command -v apt >/dev/null 2>&1; then
-      sudo apt update
-      sudo apt install -y build-essential cmake
-      mkdir -p ~/.local/bin
-    elif command -v apk >/dev/null 2>&1; then
-      sudo apk add --no-cache build-base cmake git
-    else
-      echo "Unsupported package manager. Please install fd, fzf, ripgrep, lazygit, and build tools manually."
-    fi
-
-    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    echo >> /home/dev-user/.bashrc
-    echo eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" >> /home/dev-user/.bashrc
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
-    brew install fzf ripgrep fd lazygit
-  '
+		--mount "type=volume,source=devcontainer_homebrew,target=/home/linuxbrew/"
 }
 
 # Exec a command inside the running devcontainer
