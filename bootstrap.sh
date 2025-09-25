@@ -27,7 +27,9 @@ _install_homebrew() {
 _install_build_tools
 _install_homebrew
 
-brew install mise stow fzf ripgrep fd lazygit neovim starship zoxide zsh
+brew install mise stow fzf ripgrep fd lazygit starship zoxide zsh
+brew install --build-from-source neovim
+
 cd ~/.dotfiles
 stow nvim starship zsh
 
