@@ -30,7 +30,10 @@ dcup-nvim() {
 	devcontainer up --workspace-folder "$workspace" --remove-existing-container \
 		--dotfiles-repository "https://github.com/SvenMarcus/.dotfiles" \
 		--dotfiles-target-path "~/.dotfiles" \
-		--mount "type=volume,source=devcontainer_homebrew,target=/home/linuxbrew/"
+		--mount "type=volume,source=devcontainer_homebrew,target=/home/linuxbrew/" \
+		--additional-features '{
+	    "ghcr.io/duduribeiro/devcontainer-features/neovim:1":{}
+	  }'
 }
 
 # Exec a command inside the running devcontainer
