@@ -31,9 +31,6 @@ dcup-nvim() {
 	devcontainer up --workspace-folder "$workspace" --remove-existing-container \
 		--dotfiles-repository "https://github.com/SvenMarcus/.dotfiles" \
 		--dotfiles-target-path "~/.dotfiles" \
-		--additional-features '{
-      "ghcr.io/nils-geistmann/devcontainers-features/zsh:0": {}
-    }' \
 		--mount "type=volume,source=devcontainer_homebrew,target=/home/linuxbrew/"
 }
 
