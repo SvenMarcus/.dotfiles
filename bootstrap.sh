@@ -19,22 +19,16 @@ _install_homebrew() {
 		echo "Homebrew is not installed. Proceeding with installation."
 
 		NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+		echo eval "$($_brew shellenv)" >>~/.bashrc
+		eval "$($_brew shellenv)"
 	fi
-}
-
-_setup_brew_shellenv() {
-	echo eval "$($_brew shellenv)" >>~/.zshrc
-	eval "$($_brew shellenv)"
 }
 
 _install_build_tools
 _install_homebrew
 
-# we are using the full brew path here, because we fist need to install zsh before we can use it for the brew shellenv
-$_brew install mise stow fzf ripgrep fd lazygit neovim starship zoxide zsh
+brew install mise stow fzf ripgrep fd lazygit neovim starship zoxide zsh
 cd ~/.dotfiles
 stow nvim starship zsh
-
-_setup_brew_shellenv
 
 mise install node@latest

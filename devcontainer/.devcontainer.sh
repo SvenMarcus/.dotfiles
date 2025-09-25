@@ -27,7 +27,6 @@ dcup-nvim() {
 	echo "Neovim Config: $nvim_config"
 	echo "Neovim Data: $nvim_data"
 
-	# Rebuild devcontainer with Neovim and Node features only
 	devcontainer up --workspace-folder "$workspace" --remove-existing-container \
 		--dotfiles-repository "https://github.com/SvenMarcus/.dotfiles" \
 		--dotfiles-target-path "~/.dotfiles" \
