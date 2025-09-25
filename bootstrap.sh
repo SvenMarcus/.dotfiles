@@ -27,13 +27,16 @@ _install_homebrew() {
 _install_build_tools
 _install_homebrew
 
-brew install mise stow fzf ripgrep fd lazygit starship zoxide zsh
+brew install mise stow fzf ripgrep fd lazygit starship zoxide
 
 # ensure that there is no conflicting zshrc
 rm ~/.zshrc
 
 cd ~/.dotfiles
 stow nvim starship zsh
+echo eval "$($_brew shellenv)" >>~/.zshrc
+eval "$($_brew shellenv)"
+rm ~/.bashrc
 
 mise install node@latest
 mise use -g node@latest

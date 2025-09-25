@@ -53,7 +53,14 @@ dcshell() {
 # Run neovim inside the devcontainer directly
 dcnvim() {
 	local workspace="${1:-$(pwd)}"
-	devcontainer exec --workspace-folder "$workspace" nvim "$@"
+	local cid=$(docker ps --filter "label=devcontainer.local_folder=$(realpath ".")" --format "{{.ID}}")
+
+	if [ -z "$cid" ]; then
+		echo "❌ No devcontainer found for $workspace"
+		return 1
+	fi
+
+	docker exec -it "$cid" zsh -i -c "source ~/.zshrc >/dev/null 2>&1; nvim \"$@\""
 }
 
 # Stop and clean up the devcontainer for the current project
