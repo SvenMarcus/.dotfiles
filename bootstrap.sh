@@ -10,8 +10,8 @@ _install_build_tools() {
 	fi
 }
 
-_brew="/home/linuxbrew/.linuxbrew/bin/brew"
-_brew_env="$($BREW shellenv)"
+_brew=/home/linuxbrew/.linuxbrew/bin/brew
+_brew_env="$($_brew shellenv)"
 
 _install_homebrew() {
 	if command -v brew >/dev/null 2>&1; then
@@ -34,7 +34,7 @@ rm ~/.zshrc
 
 cd ~/.dotfiles
 stow nvim starship zsh
-echo $_brew_env >>~/.zshrc
+echo $_brew_env >>~/.zprofile
 
 mise install node@latest
 mise use -g node@latest

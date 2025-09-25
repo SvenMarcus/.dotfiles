@@ -60,7 +60,7 @@ dcnvim() {
 		return 1
 	fi
 
-	docker exec -it "$cid" zsh -i -c "source ~/.zshrc >/dev/null 2>&1; nvim \"$@\""
+	docker exec -it "$cid" zsh -l -c "nvim \"$@\""
 }
 
 # Stop and clean up the devcontainer for the current project
