@@ -29,6 +29,9 @@ _install_homebrew
 
 brew install mise stow fzf ripgrep fd lazygit starship zoxide zsh
 
+# ensure that there is no conflicting zshrc
+rm ~/.zshrc
+
 cd ~/.dotfiles
 stow nvim starship zsh
 
