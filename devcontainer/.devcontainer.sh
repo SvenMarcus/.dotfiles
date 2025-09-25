@@ -32,7 +32,7 @@ dcup-nvim() {
 		--dotfiles-repository "https://github.com/SvenMarcus/.dotfiles" \
 		--dotfiles-target-path "~/.dotfiles" \
 		--additional-features '{
-      "ghcr.io/devcontainers/features/node:1": {}
+      "ghcr.io/nils-geistmann/devcontainers-features/zsh:0": {}
     }' \
 		--mount "type=volume,source=devcontainer_homebrew,target=/home/linuxbrew/"
 }
