@@ -36,7 +36,6 @@ cd ~/.dotfiles
 stow nvim starship zsh
 echo eval "$($_brew shellenv)" >>~/.zshrc
 eval "$($_brew shellenv)"
-rm ~/.bashrc
 
 mise install node@latest
 mise use -g node@latest
