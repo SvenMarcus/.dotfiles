@@ -11,7 +11,6 @@ _install_build_tools() {
 }
 
 _brew=/home/linuxbrew/.linuxbrew/bin/brew
-_brew_env="$($_brew shellenv)"
 
 _install_homebrew() {
 	if command -v brew >/dev/null 2>&1; then
@@ -20,7 +19,9 @@ _install_homebrew() {
 		echo "Homebrew is not installed. Proceeding with installation."
 
 		NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-		echo $_brew_env >>~/.bashrc
+		echo "eval \"\$($_brew shellenv)\"" >>~/.bashrc
+		echo "eval \"\$($_brew shellenv)\"" >>~/.zprofile
+		eval "$($_brew shellenv)"
 	fi
 }
 
@@ -34,7 +35,6 @@ rm ~/.zshrc
 
 cd ~/.dotfiles
 stow nvim starship zsh
-echo $_brew_env >>~/.zprofile
 
 mise install node@latest
 mise use -g node@latest
