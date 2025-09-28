@@ -20,7 +20,7 @@ _install_homebrew() {
 
 		NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 		echo "eval \"\$($_brew shellenv)\"" >>~/.bashrc
-		echo "eval \"\$($_brew shellenv)\"" >>~/.zprofile
+		echo "eval \"\$($_brew shellenv)\"" >>~/.brewenv
 		eval "$($_brew shellenv)"
 	fi
 }
@@ -35,6 +35,10 @@ rm ~/.zshrc
 
 cd ~/.dotfiles
 stow nvim starship zsh
+
+mv ~/.zshrc ~/._zshrc
+mv ~/.brewenv ~/.zshrc
+cat ~/._zshrc >>~/.zshrc
 
 mise install node@latest
 mise use -g node@latest
