@@ -16,8 +16,7 @@
     "lazyvim.plugins.extras.lang.toml",
     "lazyvim.plugins.extras.lang.typescript",
     "lazyvim.plugins.extras.lsp.none-ls",
-    "lazyvim.plugins.extras.test.core",
-    "lazyvim.plugins.extras.ui.mini-animate"
+    "lazyvim.plugins.extras.test.core"
   ],
   "news": {
     "NEWS.md": "11866"

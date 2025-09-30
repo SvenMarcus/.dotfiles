@@ -5,3 +5,5 @@
 
 -- set the shell to /usr/bin/zsh
 vim.opt.shell = "zsh"
+
+vim.opt.cursorline = false

@@ -222,3 +222,8 @@ alt-shift-l = ['join-with right', 'mode main']
 down = 'volume down'
 up = 'volume up'
 shift-down = ['volume set 0', 'mode main']
+
+
+[[on-window-detected]]
+if.app-id = "com.bitwarden.desktop"
+run = ["layout floating"]
