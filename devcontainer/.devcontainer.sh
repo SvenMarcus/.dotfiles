@@ -31,6 +31,8 @@ dcup-nvim() {
 		--dotfiles-repository "https://github.com/SvenMarcus/.dotfiles" \
 		--dotfiles-target-path "~/.dotfiles" \
 		--mount "type=volume,source=devcontainer_homebrew,target=/home/linuxbrew/" \
+		--mount "type=volume,source=devcontainer_nvim_share,taget=~/.local/share/nvim" \
+		--mount "type=volume,source=devcontainer_nvim_state,taget=~/.local/state/nvim" \
 		--additional-features '{
 	    "ghcr.io/duduribeiro/devcontainer-features/neovim:1":{}
 	  }'
