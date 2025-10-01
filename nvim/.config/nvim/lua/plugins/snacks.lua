@@ -1,5 +1,20 @@
 return {
   "snacks.nvim",
+  keys = {
+    {
+      "<leader>fa",
+      function()
+        Snacks.picker.files({
+          sources = {
+            files = {
+              hidden = true,
+              ignored = true,
+            },
+          },
+        })
+      end,
+    },
+  },
   opts = {
     scroll = { enabled = true },
     styles = {
@@ -10,9 +25,10 @@ return {
     terminal = {
       win = {
         position = "float",
-        width = 0.4,
-        height = 0.4,
       },
+    },
+    picker = {
+      hidden = true,
     },
   },
 }

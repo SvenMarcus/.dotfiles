@@ -9,6 +9,23 @@ _resolve_path() {
 	fi
 }
 
+_get_remote_workspace_folder() {
+	local cid="$1"
+	local local_workspace="$2"
+
+	local ws_folder=$(
+		docker inspect "$cid" \
+			--format '{{ index .Config.Labels "devcontainer.metadata" }}' |
+			jq -r '.[] | select(.workspaceFolder != null) | .workspaceFolder' | head -n1
+	)
+
+	if [[ -z "$ws_folder" || "$ws_folder" == "null" ]]; then
+		ws_folder="/workspaces/$(basename "$local_workspace")"
+	fi
+
+	echo "$ws_folder"
+}
+
 dcup() {
 	local workspace="${1:-$(pwd)}"
 
@@ -62,7 +79,14 @@ dcnvim() {
 		return 1
 	fi
 
-	docker exec -it "$cid" zsh -i -c "nvim \"$@\""
+	local remote_user=$(
+		docker inspect "$cid" \
+			--format '{{ index .Config.Labels "devcontainer.metadata" }}' |
+			jq -r '.[] | select(.remoteUser != null) | .remoteUser' | head -n1
+	)
+
+	local workspace_folder=$(_get_remote_workspace_folder "$cid" "$workspace")
+	docker exec -u $remote_user -w $workspace_folder -it "$cid" zsh -i -c "nvim \"$@\""
 }
 
 # Stop and clean up the devcontainer for the current project
