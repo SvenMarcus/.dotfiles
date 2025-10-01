@@ -28,7 +28,7 @@ _install_homebrew() {
 _install_build_tools
 _install_homebrew
 
-brew install mise stow fzf ripgrep fd lazygit starship zoxide
+brew install mise stow fzf ripgrep fd lazygit starship zoxide opencode
 
 # ensure that there is no conflicting zshrc
 rm ~/.zshrc
