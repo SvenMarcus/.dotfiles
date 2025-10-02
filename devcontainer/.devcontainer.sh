@@ -69,10 +69,10 @@ dcup-nvim() {
 		--dotfiles-target-path "~/.dotfiles" \
 		--mount "type=volume,source=devcontainer_homebrew,target=/home/linuxbrew/" \
 		--mount "type=bind,source=$HOME/.local/share/opencode,target=$home_path/.local/share/opencode" \
-		--mount "type=bind,source=$HOME/.gitconfig,target=$home_path/.gitconfig" \
-		--additional-features '{
-	    "ghcr.io/duduribeiro/devcontainer-features/neovim:1":{}
-	  }'
+		--mount "type=bind,source=$HOME/.gitconfig,target=$home_path/.gitconfig"
+	# --additional-features '{
+	#    "ghcr.io/duduribeiro/devcontainer-features/neovim:1":{}
+	#  }'
 	# not mounting nvim data for now as we keep having issues with that
 	# --mount "type=volume,source=devcontainer_nvim_share,target=$home_path/.local/share/nvim" \
 	# --mount "type=volume,source=devcontainer_nvim_state,target=$home_path/.local/state/nvim" \
