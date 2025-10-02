@@ -7,3 +7,6 @@
 vim.opt.shell = "zsh"
 
 vim.opt.cursorline = false
+
+-- disable snacks animation, because they sometimes cause text rendering issues (bleeding) in devcontainers
+vim.g.snacks_animate = true
