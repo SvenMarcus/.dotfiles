@@ -90,24 +90,23 @@ dcshell() {
 
 # Run neovim inside the devcontainer directly
 dcnvim() {
-	# local workspace="${1:-$(pwd)}"
-	# local cid=$(docker ps --filter "label=devcontainer.local_folder=$(realpath ".")" --format "{{.ID}}")
-	#
-	# if [ -z "$cid" ]; then
-	# 	echo "❌ No devcontainer found for $workspace"
-	# 	return 1
-	# fi
-	#
-	# local remote_user=$(
-	# 	docker inspect "$cid" \
-	# 		--format '{{ index .Config.Labels "devcontainer.metadata" }}' |
-	# 		jq -r '.[] | select(.remoteUser != null) | .remoteUser' | head -n1
-	# )
-	#
-	# local workspace_folder=$(_get_remote_workspace_folder "$cid" "$workspace")
-	# docker exec -u $remote_user -w $workspace_folder -it "$cid" zsh -i -c "nvim \"$@\""
+	local workspace="${1:-$(pwd)}"
+	local cid=$(docker ps --filter "label=devcontainer.local_folder=$(realpath ".")" --format "{{.ID}}")
 
-	devcontainer exec --workspace-folder "$(pwd)" nvim "$@"
+	if [ -z "$cid" ]; then
+		echo "❌ No devcontainer found for $workspace"
+		return 1
+	fi
+
+	local remote_user=$(
+		docker inspect "$cid" \
+			--format '{{ index .Config.Labels "devcontainer.metadata" }}' |
+			jq -r '.[] | select(.remoteUser != null) | .remoteUser' | head -n1
+	)
+
+	local workspace_folder=$(_get_remote_workspace_folder "$cid" "$workspace")
+	docker exec -u $remote_user -w $workspace_folder -it "$cid" zsh -i -c "nvim \"$@\""
+	# devcontainer exec --workspace-folder "$(pwd)" zsh -l -i -c "nvim \"$@\""
 }
 
 # Stop and clean up the devcontainer for the current project
