@@ -227,3 +227,11 @@ shift-down = ['volume set 0', 'mode main']
 [[on-window-detected]]
 if.app-id = "com.bitwarden.desktop"
 run = ["layout floating"]
+
+[[on-window-detected]]
+if.app-id = "com.cisco.secureclient.gui"
+run = ["layout floating"]
+
+[[on-window-detected]]
+if.app-id = "com.cisco.anyconnect.gui"
+run = ["layout floating"]
