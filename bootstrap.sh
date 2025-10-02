@@ -30,6 +30,11 @@ _install_homebrew
 
 brew install neovim mise stow fzf ripgrep fd lazygit starship zoxide opencode
 
+mkdir -p ~/.config/lazygit
+
+# lazygit does not start in neovim if that file is not present
+touch ~/.config/lazygit/config.yml
+
 # ensure that there is no conflicting zshrc
 rm ~/.zshrc
 

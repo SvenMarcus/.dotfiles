@@ -8,5 +8,7 @@ source $HOME/.devcontainer.sh
 export PATH="$PATH:/Users/marcus/.local/bin"
 
 alias singularity="docker run --privileged --rm --platform=linux/amd64 --network=host -it -v $PWD:/data -w /data quay.io/singularity/singularity:v4.1.0"
+alias lg="lazygit"
 
 eval "$(zoxide init zsh)"
+
