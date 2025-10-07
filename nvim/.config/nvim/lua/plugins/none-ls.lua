@@ -2,71 +2,36 @@ return {
   "nvimtools/none-ls.nvim",
   opts = function(_, opts)
     local null_ls = require("null-ls")
+    opts.sources = opts.sources or {}
 
-    local function resolve_mypy()
-      local function is_exec(path)
-        return path and path ~= "" and vim.fn.executable(path) == 1
-      end
-
-      local ok, venv_selector = pcall(require, "venv-selector")
-      if ok then
-        local venv_path = venv_selector.venv()
-        if venv_path and venv_path ~= vim.NIL and venv_path ~= "" then
-          local venv_dir = vim.fn.fnamemodify(venv_path, ":h")
-          local mypy_path = venv_dir .. "/mypy"
-          if is_exec(mypy_path) then
-            return mypy_path
-          end
-        end
-      end
-
-      -- Fall back to global mypy
-      local global_mypy = vim.fn.exepath("mypy")
-      if is_exec(global_mypy) then
-        return global_mypy
-      elseif is_exec("mypy") then
-        return "mypy"
-      else
-        vim.notify("⚠️ No valid mypy executable found in PATH or virtualenv.", vim.log.levels.WARN)
-        return nil
-      end
-    end
-
-    local function setup_mypy_source()
-      local mypy_path = resolve_mypy()
-      if not mypy_path then
+    local function add_mypy_source()
+      local mypy_path = vim.fn.exepath("mypy")
+      if mypy_path == "" then
+        vim.notify("⚠️ mypy not found (no venv active?)", vim.log.levels.WARN)
         return
       end
-
-      vim.notify("✅ Using mypy from: " .. mypy_path, vim.log.levels.INFO)
-
-      opts.sources = vim.tbl_filter(function(src)
-        return src.name ~= "mypy"
-      end, opts.sources or {})
-
       table.insert(
         opts.sources,
         null_ls.builtins.diagnostics.mypy.with({
           command = mypy_path,
         })
       )
+      require("null-ls").setup(opts)
+      vim.notify("✅ Registered mypy from " .. mypy_path, vim.log.levels.INFO)
     end
 
-    -- Initial setup
-    setup_mypy_source()
+    -- Initial registration (might be empty)
+    add_mypy_source()
 
-    -- Attach to venv-selector callback safely
+    -- Register callback when venv changes
     local ok, venv_selector = pcall(require, "venv-selector")
-    if ok then
-      local old_callback = venv_selector.options and venv_selector.options.on_venv_activate_callback
-      local function combined_callback(...)
-        if old_callback then
-          pcall(old_callback, ...)
-        end
-        vim.schedule(setup_mypy_source)
-      end
-      venv_selector.options = venv_selector.options or {}
-      venv_selector.options.on_venv_activate_callback = combined_callback
+    if ok and venv_selector.on_venv_activate_callback then
+      venv_selector.on_venv_activate_callback(add_mypy_source)
+    else
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "VenvSelectActivated",
+        callback = add_mypy_source,
+      })
     end
   end,
 }
