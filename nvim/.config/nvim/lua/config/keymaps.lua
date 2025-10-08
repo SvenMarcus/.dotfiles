@@ -3,5 +3,8 @@
 -- Add any additional keymaps here
 local map = LazyVim.safe_keymap_set
 
-map("n", "ö", "{", { desc = "Previous" })
-map("n", "ä", "}", { desc = "Next" })
+map("n", "Ö", "{", { desc = "Previous Paragraph" })
+map("n", "Ä", "}", { desc = "Next Paragraph" })
+
+map("n", "ö", "[")
+map("n", "ö", "]")
