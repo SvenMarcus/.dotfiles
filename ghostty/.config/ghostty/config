@@ -1,6 +1,7 @@
 theme = "catppuccin-mocha.conf"
 font-family = "JetBrainsMono Nerd Font"
-font-size = 20
+font-style = "SemiBold"
+font-size = 22
 
 background-opacity = 0.9
 background-blur = true
