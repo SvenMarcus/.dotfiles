@@ -1,6 +1,13 @@
 return {
   "NickvanDyke/opencode.nvim",
   dependencies = { "folke/snacks.nvim", opts = { input = { enabled = true } } },
+  config = function()
+    vim.g.opencode_opts = {
+      provider = {
+        cmd = "opencode --port --agent OpenAgent",
+      },
+    }
+  end,
   keys = {
     {
       "<leader>oA",

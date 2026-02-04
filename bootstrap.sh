@@ -31,6 +31,11 @@ _install_homebrew
 brew install neovim mise stow fzf ripgrep fd lazygit starship zoxide opencode tree-sitter-cli
 brew install anomalyco/tap/opencode
 
+# Install OpenAgentsControl (default agents, commands, and context system)
+echo "Installing OpenAgentsControl..."
+curl -fsSL https://raw.githubusercontent.com/darrenhinde/OpenAgentsControl/main/install.sh | \
+	bash -s developer --install-dir ~/.config/opencode
+
 mkdir -p ~/.config/lazygit
 
 # lazygit does not start in neovim if that file is not present
@@ -40,7 +45,13 @@ touch ~/.config/lazygit/config.yml
 rm ~/.zshrc
 
 cd ~/.dotfiles
-stow nvim starship zsh
+
+# Initialize git submodules (Superpowers skills)
+echo "Initializing git submodules (Superpowers)..."
+git submodule update --init --recursive
+
+# Stow dotfiles config (overlays Superpowers on top of OpenAgentsControl)
+stow nvim starship zsh opencode
 
 mv ~/.zshrc ~/._zshrc
 mv ~/.brewenv ~/.zshrc

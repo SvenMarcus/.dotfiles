@@ -1,0 +1,15 @@
+# OpenCode runtime files
+node_modules/
+bun.lock
+package-lock.json
+
+# Session data
+sessions/
+.tmp/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
