@@ -28,7 +28,7 @@ _install_homebrew() {
 _install_build_tools
 _install_homebrew
 
-brew install neovim mise stow fzf ripgrep fd lazygit starship zoxide opencode
+brew install neovim mise stow fzf ripgrep fd lazygit starship zoxide opencode tree-sitter-cli
 brew install anomalyco/tap/opencode
 
 mkdir -p ~/.config/lazygit
