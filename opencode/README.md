@@ -1,10 +1,10 @@
-# OpenCode + Superpowers + OpenAgentsControl Integration
+# OpenCode + OpenAgent + OpenAgentsControl Integration
 
-This directory contains a complete AI coding agent setup that combines three powerful systems:
+This directory contains a complete AI coding agent setup that combines:
 
 1. **[OpenCode](https://opencode.ai)** - Open-source AI coding framework (base)
 2. **[OpenAgentsControl](https://github.com/darrenhinde/OpenAgentsControl)** - Approval-first agents with context management
-3. **[Superpowers](https://github.com/obra/superpowers)** - Agentic skills framework for TDD, debugging, etc.
+3. **OpenAgent Skills** - Standalone approval-gated workflows for TDD, debugging, brainstorming, etc.
 
 ## Architecture
 
@@ -18,12 +18,12 @@ This directory contains a complete AI coding agent setup that combines three pow
 ├── context/                                  # ← From OpenAgentsControl
 │   └── (MVI context files)                  #   Your coding patterns
 ├── plugins/                                  # ← From dotfiles (this repo)
-│   ├── superpowers.js                       #   Auto-loads Superpowers bootstrap
-│   └── openagent.js                         #   Auto-loads OpenAgent skill routing
+│   └── openagent.js                         #   Auto-loads OpenAgent skills
 ├── skills/                                   # ← From dotfiles (this repo)
-│   ├── superpowers/ -> ../superpowers/skills #   Superpowers skills (symlink)
-│   └── custom/                              #   OpenAgent approval-gated versions (12 skills)
-│       ├── openagent-skill-index/           #   Skill routing logic
+│   └── custom/                              #   OpenAgent skills (14 total)
+│       ├── openagent-skill-index/           #   Skill routing and catalog
+│       ├── openagent-using-skills/          #   Foundation: skill usage
+│       ├── openagent-writing-skills/        #   Foundation: skill creation
 │       ├── openagent-test-driven-development/
 │       ├── openagent-systematic-debugging/
 │       ├── openagent-brainstorming/
@@ -36,8 +36,8 @@ This directory contains a complete AI coding agent setup that combines three pow
 │       ├── openagent-receiving-code-review/
 │       ├── openagent-verification-before-completion/
 │       └── openagent-dispatching-parallel-agents/
-└── superpowers/                             # ← From dotfiles (git submodule)
-    └── (Superpowers framework)              #   Git submodule from obra/superpowers
+└── superpowers-reference/                   # ← Reference only (not loaded)
+    └── (Original Superpowers skills)        #   Kept for historical reference
 ```
 
 ## What Each System Provides
@@ -59,19 +59,32 @@ This directory contains a complete AI coding agent setup that combines three pow
 - **Context system** - MVI (Minimal Viable Information) pattern management
 - **Approval-first workflow** - You review plans before execution
 
-### Superpowers (Skills Framework)
+### OpenAgent Skills (14 Total)
 
-- **using-superpowers** - Bootstrap skill that enforces skill-checking discipline
-- **test-driven-development** - TDD workflow (RED → GREEN → REFACTOR)
-- **systematic-debugging** - Debug workflow (Isolate → Hypothesize → Test → Fix)
-- **brainstorming** - Design exploration before implementation
-- **using-git-worktrees** - Isolated workspace creation
-- **Plus 10+ more skills** - Code review, planning, execution, etc.
+**Foundation Skills (2)**:
+- **openagent-using-skills** - Skill usage discipline (when to invoke, how to follow)
+- **openagent-writing-skills** - TDD for creating new skills with supporting tools
+
+**Core Development Workflows (8)**:
+- **openagent-test-driven-development** - TDD workflow (RED → GREEN → REFACTOR) with approval gates
+- **openagent-systematic-debugging** - 4-phase debug workflow with approval gates
+- **openagent-brainstorming** - Design exploration before implementation with approval gates
+- **openagent-using-git-worktrees** - Isolated workspace creation with approval gates
+- **openagent-writing-plans** - Implementation planning with approval gates
+- **openagent-executing-plans** - Batch plan execution with approval gates
+- **openagent-subagent-driven-development** - Subagent workflows with approval gates
+- **openagent-finishing-a-development-branch** - Branch completion with approval gates
+
+**Code Quality & Review (4)**:
+- **openagent-requesting-code-review** - Code review requests with approval gates
+- **openagent-receiving-code-review** - Review feedback handling with approval gates
+- **openagent-verification-before-completion** - Evidence-based completion with approval gates
+- **openagent-dispatching-parallel-agents** - Parallel task dispatch with approval gates
 
 ### Our Custom Integration (This Repo)
 
-- **Plugins** - Auto-inject Superpowers + OpenAgent routing
-- **Custom skills** - Approval-gated wrappers around Superpowers workflows
+- **Plugin** - Auto-injects OpenAgent foundation skills
+- **Skills** - 14 standalone approval-gated workflows
 - **Stow integration** - Overlay configuration on top of OpenAgentsControl
 
 ## Installation
@@ -91,8 +104,7 @@ The bootstrap script will:
 
 1. ✅ Install OpenCode via Homebrew
 2. ✅ Install OpenAgentsControl (agents, commands, context)
-3. ✅ Initialize Superpowers git submodule
-4. ✅ Stow your custom config (plugins + skills overlay)
+3. ✅ Stow your custom config (plugins + skills overlay)
 
 ### Manual Installation
 
@@ -103,11 +115,8 @@ If you already have OpenCode installed:
 curl -fsSL https://raw.githubusercontent.com/darrenhinde/OpenAgentsControl/main/install.sh | \
   bash -s developer --install-dir ~/.config/opencode
 
-# Initialize Superpowers submodule
-cd ~/.dotfiles
-git submodule update --init --recursive
-
 # Stow custom config
+cd ~/.dotfiles
 stow opencode
 ```
 
@@ -120,14 +129,14 @@ stow opencode
 
 2. OpenCode starts:
    ├─ Loads plugins from ~/.config/opencode/plugins/
-   │  ├─ superpowers.js injects using-superpowers content
-   │  └─ openagent.js injects openagent-skill-index content
+   │  └─ openagent.js injects foundation skills content
+   │     ├─ openagent-using-skills (skill usage discipline)
+   │     └─ openagent-skill-index (skill catalog & routing)
    │
    ├─ Loads OpenAgent from ~/.config/opencode/agent/core/openagent.md
    │
    └─ Agent has access to:
-      ├─ Superpowers skills (via skill tool)
-      ├─ OpenAgent custom skills (via skill tool)
+      ├─ OpenAgent skills (via skill tool) - 14 total
       ├─ OpenAgentsControl commands (/add-context, etc.)
       └─ OpenAgentsControl context files
 ```
@@ -179,17 +188,19 @@ Answer 6 questions:
 
 ## Skill Auto-Loading
 
-**Superpowers Plugin** injects bootstrap content that tells agents:
+**OpenAgent Plugin** injects bootstrap content that tells agents:
 
-- "You have superpowers"
+- "You have OpenAgent skills"
 - "Check for skills BEFORE any response"
 - "Even a 1% chance a skill applies → invoke it"
+- "Prefer approval-gated workflows"
+- "Follow skill discipline from openagent-using-skills"
 
-**OpenAgent Plugin** adds routing logic that tells agents:
+**Skill Routing** from openagent-skill-index tells agents:
 
-- "Prefer custom/openagent-*skills over superpowers/*"
-- "OpenAgent skills add approval gates"
-- "Follow approval-first workflow"
+- Which skill to use for each task type
+- When to load foundation vs workflow skills
+- How approval gates integrate with workflows
 
 **Result:** Agents automatically use the right skills at the right time.
 
@@ -223,8 +234,8 @@ opencode --agent OpenCoder
 
 5. **Production-Ready Code**
    - Matches your exact patterns (from context)
-   - Follows TDD workflow (from Superpowers)
-   - Approval-gated (from OpenAgent wrappers)
+   - Follows TDD workflow (from OpenAgent skills)
+   - Approval-gated throughout
 
 ## OpenAgent Custom Skills
 
@@ -417,12 +428,6 @@ Use for multiple independent failures - parallel dispatch with approval gates
 
 ## Using Skills
 
-### Load a Superpowers Skill
-
-```
-use skill tool to load superpowers/brainstorming
-```
-
 ### Load an OpenAgent Skill
 
 ```
@@ -435,24 +440,7 @@ use skill tool to load custom/openagent-test-driven-development
 use skill tool to list skills
 ```
 
-## Updating Superpowers
-
-Since Superpowers is a git submodule:
-
-```bash
-cd ~/.dotfiles/opencode/.config/opencode/superpowers
-git pull origin main
-cd ~/.dotfiles
-git add opencode/.config/opencode/superpowers
-git commit -m "Update Superpowers to latest version"
-```
-
-Or update all submodules:
-
-```bash
-cd ~/.dotfiles
-git submodule update --remote
-```
+Skills are auto-loaded when agents detect task types. Manual loading is optional.
 
 ## Adding Custom Skills
 
@@ -475,28 +463,33 @@ description: Use when [condition] - [what it does]
 [Your skill content here]
 ```
 
+Use `custom/openagent-writing-skills` for TDD workflow to create new skills.
+
 The skill will be automatically available after restart or when stowed.
 
 ## Philosophy
 
-**Superpowers**: Autonomous agent workflows with auto-triggering skills
+**OpenAgent Skills**: Standalone approval-gated workflows for disciplined development
 
-**OpenAgent**: Approval-first execution with safety gates
+**OpenAgentsControl**: Context-aware agents with approval-first execution
 
-**This Integration**: Best of both worlds
+**This Integration**: Complete autonomous development system
 
-- Superpowers' structured methodologies (TDD, systematic debugging, brainstorming)
-- OpenAgent's safety approach (approval gates, report-first, stop-on-failure)
+- Structured methodologies (TDD, systematic debugging, brainstorming)
+- Approval gates at every phase transition
+- Safety-first approach (report-first, stop-on-failure)
+- Context-aware code generation (matches your patterns)
 
-## Key Differences from Native Superpowers
+## Key Workflow Features
 
-| Aspect | Superpowers Native | OpenAgent Integration |
-|--------|-------------------|----------------------|
-| Activation | Auto-triggers | Manual approval per skill |
-| TDD Enforcement | Deletes non-TDD code | Warns, requests approval to delete |
-| Git Worktrees | Auto-creates | Requests approval first |
-| Debugging Fixes | Follow 4 phases strictly | Follow 4 phases, report at each |
-| Plan Execution | Autonomous or batch | Approval per task or batch |
+| Feature | How It Works |
+|---------|-------------|
+| TDD Enforcement | Approval gates at RED/GREEN/REFACTOR transitions |
+| Systematic Debugging | 4-phase workflow with approval at each phase |
+| Git Worktrees | Requests approval before creating isolated workspace |
+| Plan Execution | Approval per task or batch, never autonomous |
+| Code Review | Reports findings, requests approval to fix |
+| Verification | Evidence-based completion before claiming success |
 
 ## Verification
 
@@ -532,20 +525,25 @@ Agent should:
 
 ## Troubleshooting
 
-### Superpowers Skills Not Loading
+### OpenAgent Skills Not Loading
 
-Check symlink:
+Check plugin file:
 
 ```bash
-ls -la ~/.config/opencode/skills/superpowers
-# Should point to: ../superpowers/skills
+ls -la ~/.config/opencode/plugins/openagent.js
 ```
 
-Reinitialize submodule:
+Check skills directory:
+
+```bash
+ls ~/.config/opencode/skills/custom/
+# Should show 14 openagent-* directories
+```
+
+Restow:
 
 ```bash
 cd ~/.dotfiles
-git submodule update --init --recursive
 stow opencode
 ```
 
@@ -558,13 +556,13 @@ curl -fsSL https://raw.githubusercontent.com/darrenhinde/OpenAgentsControl/main/
   bash -s developer --install-dir ~/.config/opencode
 ```
 
-### Plugins Not Loading
+### Plugin Not Loading
 
-Check plugin files exist:
+Check plugin exists:
 
 ```bash
 ls ~/.config/opencode/plugins/
-# Should show: superpowers.js, openagent.js
+# Should show: openagent.js
 ```
 
 Restow:
@@ -578,13 +576,15 @@ stow opencode
 
 - [OpenCode Documentation](https://opencode.ai/docs/)
 - [OpenAgentsControl GitHub](https://github.com/darrenhinde/OpenAgentsControl)
-- [Superpowers GitHub](https://github.com/obra/superpowers)
-- [Superpowers Blog Post](https://blog.fsck.com/2025/10/09/superpowers/)
 - [OpenCode Discord](https://opencode.ai/discord)
+
+## Acknowledgments
+
+OpenAgent skills were originally inspired by [Superpowers](https://github.com/obra/superpowers) by Jesse Vincent. The methodologies (TDD, systematic debugging, brainstorming, etc.) are preserved with integrated approval gates for safety-first development.
 
 ## License
 
 - OpenCode: Apache 2.0
 - OpenAgentsControl: MIT
-- Superpowers: MIT
+- OpenAgent Skills: MIT
 - This configuration: MIT

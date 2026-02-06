@@ -1,8 +1,8 @@
 /**
  * OpenAgent plugin for OpenCode.ai
  *
- * Extends Superpowers plugin with OpenAgent-specific skill routing.
- * Loads openagent-skill-index to prefer approval-gated skills.
+ * Loads OpenAgent skill foundation (openagent-using-skills) and skill index.
+ * Provides approval-gated workflow skills for safety-first development.
  */
 
 import path from 'path';
@@ -50,39 +50,85 @@ export const OpenAgentPlugin = async ({ client, directory }) => {
   const envConfigDir = normalizePath(process.env.OPENCODE_CONFIG_DIR, homeDir);
   const configDir = envConfigDir || path.join(homeDir, '.config/opencode');
 
-  // Helper to generate OpenAgent context
-  const getOpenAgentContext = () => {
-    // Try to load openagent-skill-index
-    const skillPath = path.join(configDir, 'skills/custom/openagent-skill-index/SKILL.md');
-    if (!fs.existsSync(skillPath)) return null;
+  // Helper to generate OpenAgent bootstrap context
+  const getOpenAgentBootstrap = () => {
+    // Try to load openagent-using-skills (foundation)
+    const usingSkillsPath = path.join(configDir, 'skills/custom/openagent-using-skills/SKILL.md');
+    if (!fs.existsSync(usingSkillsPath)) return null;
 
-    const fullContent = fs.readFileSync(skillPath, 'utf8');
+    const fullContent = fs.readFileSync(usingSkillsPath, 'utf8');
+    const { content } = extractAndStripFrontmatter(fullContent);
+
+    const toolMapping = `**Tool Mapping for OpenCode:**
+When skills reference tools you don't have, substitute OpenCode equivalents:
+- \`TodoWrite\` → \`todowrite\` (your native tool)
+- \`Task\` tool with subagents → Use OpenCode's subagent system (\`task\` tool)
+- \`Skill\` tool → OpenCode's native \`skill\` tool
+- \`Read\`, \`Write\`, \`Edit\`, \`Bash\` → Your native tools
+
+**Skills location:**
+OpenAgent skills are in \`${configDir}/skills/custom/\`
+Use OpenCode's native \`skill\` tool to list and load skills.`;
+
+    return `<EXTREMELY_IMPORTANT>
+You have OpenAgent skills.
+
+**IMPORTANT: The openagent-using-skills foundation is included below. It is ALREADY LOADED - you are currently following it. Do NOT use the skill tool to load "openagent-using-skills" again - that would be redundant.**
+
+${content}
+
+${toolMapping}
+</EXTREMELY_IMPORTANT>`;
+  };
+
+  // Helper to generate OpenAgent skill index context
+  const getOpenAgentIndex = () => {
+    // Try to load openagent-skill-index
+    const skillIndexPath = path.join(configDir, 'skills/custom/openagent-skill-index/SKILL.md');
+    if (!fs.existsSync(skillIndexPath)) return null;
+
+    const fullContent = fs.readFileSync(skillIndexPath, 'utf8');
     const { content } = extractAndStripFrontmatter(fullContent);
 
     return `<OPENAGENT_ENHANCEMENT>
-The using-superpowers skill has been loaded by the Superpowers plugin.
+The openagent-using-skills skill has been loaded by the OpenAgent plugin.
 
 **ADDITIONAL CONTEXT: OpenAgent Custom Skills**
 
 ${content}
 
 **Key Principle:**
-When Superpowers tells you to check for skills, PRIORITIZE OpenAgent custom skills:
-- custom/openagent-brainstorming (not superpowers/brainstorming)
-- custom/openagent-tdd (not superpowers/test-driven-development)
-- custom/openagent-debugging (not superpowers/systematic-debugging)
-- custom/openagent-git-worktrees (not superpowers/using-git-worktrees)
+When using skills, use OpenAgent custom skills with approval gates:
+- custom/openagent-brainstorming
+- custom/openagent-test-driven-development
+- custom/openagent-systematic-debugging
+- custom/openagent-using-git-worktrees
+- custom/openagent-writing-plans
+- custom/openagent-executing-plans
+- custom/openagent-subagent-driven-development
+- custom/openagent-finishing-a-development-branch
+- custom/openagent-requesting-code-review
+- custom/openagent-receiving-code-review
+- custom/openagent-verification-before-completion
+- custom/openagent-dispatching-parallel-agents
+- custom/openagent-writing-skills
+- custom/openagent-using-skills
 
-These add approval gates that match your safety-first approach.
+These integrate approval gates throughout proven development workflows.
 </OPENAGENT_ENHANCEMENT>`;
   };
 
   return {
-    // Use system prompt transform to inject OpenAgent context AFTER Superpowers
+    // Use system prompt transform to inject OpenAgent context
     'experimental.chat.system.transform': async (_input, output) => {
-      const openagentContext = getOpenAgentContext();
-      if (openagentContext) {
-        (output.system ||= []).push(openagentContext);
+      const bootstrap = getOpenAgentBootstrap();
+      if (bootstrap) {
+        (output.system ||= []).push(bootstrap);
+      }
+
+      const index = getOpenAgentIndex();
+      if (index) {
+        (output.system ||= []).push(index);
       }
     }
   };

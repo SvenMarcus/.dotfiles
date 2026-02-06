@@ -223,8 +223,8 @@ git commit -m "docs: add [feature] design"
 
 **After approval:**
 
-1. Use custom/openagent-git-worktrees to create isolated workspace
-2. Use superpowers:writing-plans to create detailed implementation plan
+1. Use custom/openagent-using-git-worktrees to create isolated workspace
+2. Use custom/openagent-writing-plans to create detailed implementation plan
 
 **If user declines:** Design phase complete. User can implement later.
 

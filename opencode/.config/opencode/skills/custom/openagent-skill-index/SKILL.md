@@ -1,47 +1,48 @@
 ---
 name: openagent-skill-index
-description: Use when starting any conversation - establishes OpenAgent skill priority and approval gates
+description: Use when starting any conversation - establishes OpenAgent skills and approval gate philosophy
 ---
 
 # OpenAgent Skill Index
 
-**IMPORTANT: This skill index runs AFTER `using-superpowers` is loaded. It overrides Superpowers skill selection with OpenAgent's approval-gated versions.**
+**Core principle:** OpenAgent skills integrate approval gates throughout proven development workflows, ensuring safety-first development.
 
-## Skill Priority for OpenAgent
+## Skill Catalog
 
-When working on coding tasks, **ALWAYS prefer OpenAgent custom skills** over native Superpowers skills:
+When working on coding tasks, use these OpenAgent custom skills:
 
-| Task Type | Use This Skill | Instead Of |
-|-----------|---------------|------------|
-| Design/brainstorming new features | `custom/openagent-brainstorming` | `superpowers/brainstorming` |
-| Implementing code (any feature/bugfix) | `custom/openagent-test-driven-development` | `superpowers/test-driven-development` |
-| Debugging/troubleshooting | `custom/openagent-systematic-debugging` | `superpowers/systematic-debugging` |
-| Creating isolated workspace | `custom/openagent-using-git-worktrees` | `superpowers/using-git-worktrees` |
-| Writing implementation plans | `custom/openagent-writing-plans` | `superpowers/writing-plans` |
-| Executing written plans | `custom/openagent-executing-plans` | `superpowers/executing-plans` |
-| Subagent-driven development | `custom/openagent-subagent-driven-development` | `superpowers/subagent-driven-development` |
-| Finishing development branch | `custom/openagent-finishing-a-development-branch` | `superpowers/finishing-a-development-branch` |
-| Requesting code review | `custom/openagent-requesting-code-review` | `superpowers/requesting-code-review` |
-| Receiving code review feedback | `custom/openagent-receiving-code-review` | `superpowers/receiving-code-review` |
-| Verification before completion | `custom/openagent-verification-before-completion` | `superpowers/verification-before-completion` |
-| Dispatching parallel agents | `custom/openagent-dispatching-parallel-agents` | `superpowers/dispatching-parallel-agents` |
+| Task Type | Use This Skill |
+|-----------|---------------|
+| Design/brainstorming new features | `custom/openagent-brainstorming` |
+| Implementing code (any feature/bugfix) | `custom/openagent-test-driven-development` |
+| Debugging/troubleshooting | `custom/openagent-systematic-debugging` |
+| Creating isolated workspace | `custom/openagent-using-git-worktrees` |
+| Writing implementation plans | `custom/openagent-writing-plans` |
+| Executing written plans | `custom/openagent-executing-plans` |
+| Subagent-driven development | `custom/openagent-subagent-driven-development` |
+| Finishing development branch | `custom/openagent-finishing-a-development-branch` |
+| Requesting code review | `custom/openagent-requesting-code-review` |
+| Receiving code review feedback | `custom/openagent-receiving-code-review` |
+| Verification before completion | `custom/openagent-verification-before-completion` |
+| Dispatching parallel agents | `custom/openagent-dispatching-parallel-agents` |
+| Creating new skills | `custom/openagent-writing-skills` |
+| Understanding skill usage | `custom/openagent-using-skills` |
 
-## Why OpenAgent Custom Skills?
+## OpenAgent Philosophy
 
-The custom skills wrap Superpowers workflows with **approval gates** that match OpenAgent's safety-first philosophy:
+OpenAgent skills integrate **approval gates** at phase transitions:
 
-**Superpowers (native):**
-- Auto-triggers workflows
-- Deletes code that violates TDD
-- Auto-creates worktrees
-- Auto-modifies .gitignore
+**Approval gate pattern:**
+- ⏸️ Request approval before major operations
+- ⏸️ Report results after operations complete
+- ⏸️ Stop on failure, propose fixes, request approval
+- ⏸️ Ask permission for destructive actions
 
-**OpenAgent (custom):**
-- Requests approval before each phase
-- Asks permission to delete code
-- Requests approval before creating worktrees
-- Asks permission to modify .gitignore
-- Reports progress at each phase
+**Why approval gates matter:**
+- Prevents accidental destructive operations
+- Ensures user awareness at each phase
+- Creates natural checkpoints for review
+- Aligns with safety-first development
 
 ## Automatic Skill Detection
 
@@ -118,14 +119,12 @@ The custom skills wrap Superpowers workflows with **approval gates** that match 
 8. About to claim completion? → Load `custom/openagent-verification-before-completion`
 9. Development work complete? → Load `custom/openagent-finishing-a-development-branch`
 
-**The rule from using-superpowers still applies:**
+**The rule from openagent-using-skills applies:**
 > "Invoke relevant or requested skills BEFORE any response or action. Even a 1% chance a skill might apply means that you should invoke the skill to check."
-
-**But now you know to prefer OpenAgent custom skills over Superpowers skills.**
 
 ## All OpenAgent Custom Skills Available
 
-All 12 Superpowers workflow skills now have OpenAgent approval-gated versions:
+All 14 OpenAgent skills with approval-gated workflows:
 
 **Tier 1: Core Development Workflows (8 skills)**
 - `custom/openagent-test-driven-development` - TDD with approval gates
@@ -139,11 +138,15 @@ All 12 Superpowers workflow skills now have OpenAgent approval-gated versions:
 
 **Tier 2: Code Quality & Review (4 skills)**
 - `custom/openagent-requesting-code-review` - Code review requests with approval gates
+**Tier 2: Code Quality & Review (4 skills)**
+- `custom/openagent-requesting-code-review` - Code review requests with approval gates
 - `custom/openagent-receiving-code-review` - Review feedback handling with approval gates
 - `custom/openagent-verification-before-completion` - Evidence-based completion with approval gates
 - `custom/openagent-dispatching-parallel-agents` - Parallel task dispatch with approval gates
 
-**These replace the native Superpowers skills in OpenAgent workflows.**
+**Foundation Skills (2 skills)**
+- `custom/openagent-using-skills` - Skill usage methodology
+- `custom/openagent-writing-skills` - TDD for creating new skills
 
 ## Red Flags - Skill Not Loaded
 
@@ -163,11 +166,11 @@ All 12 Superpowers workflow skills now have OpenAgent approval-gated versions:
 
 **The key principle:**
 ```
-OpenAgent = Superpowers methodology + Approval gates
+OpenAgent Skills = Proven Methodology + Approval Gates
 ```
 
 **Your job:**
 1. Detect task type from user request
 2. Load appropriate `custom/openagent-*` skill
 3. Follow skill workflow with approval gates
-4. Use native `superpowers/*` skills when no custom wrapper exists
+4. Request approval before major operations

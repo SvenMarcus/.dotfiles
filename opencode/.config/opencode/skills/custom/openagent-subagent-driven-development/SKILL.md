@@ -75,7 +75,7 @@ digraph process_openagent {
         approval_final_review [label="⏸️ REQUEST\nAPPROVAL\nfor final\ncode review", shape=diamond, style=filled, fillcolor="#ffffcc"];
         "Dispatch final code reviewer subagent for entire implementation" [shape=box];
         approval_finish [label="⏸️ REQUEST\nAPPROVAL\nto finish\nbranch", shape=diamond, style=filled, fillcolor="#ffffcc"];
-        "Use superpowers:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
+        "Use custom/openagent-finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
     }
 
     approval_read -> "Read plan, extract all tasks with full text, note context, create TodoWrite" [label="approved"];
@@ -102,7 +102,7 @@ digraph process_openagent {
     "More tasks remain?" -> approval_final_review [label="no"];
     approval_final_review -> "Dispatch final code reviewer subagent for entire implementation" [label="approved"];
     "Dispatch final code reviewer subagent for entire implementation" -> approval_finish;
-    approval_finish -> "Use superpowers:finishing-a-development-branch" [label="approved"];
+    approval_finish -> "Use custom/openagent-finishing-a-development-branch" [label="approved"];
 }
 ```
 
@@ -134,7 +134,7 @@ Task 1: Hook installation script
 
 Implementer: "Before I begin - should the hook be installed at user or system level?"
 
-You: "User level (~/.config/superpowers/hooks/)"
+You: "User level (~/.config/openagent/hooks/)"
 
 Implementer: "Got it. Implementing now..."
 [Later] Implementer:
@@ -313,17 +313,16 @@ Done!
 ## Integration
 
 **Required workflow skills:**
-- **superpowers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
-- **superpowers:writing-plans** - Creates the plan this skill executes
-- **superpowers:requesting-code-review** - Code review template for reviewer subagents
-- **superpowers:finishing-a-development-branch** - Complete development after all tasks
+- **custom/openagent-using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
+- **custom/openagent-writing-plans** - Creates the plan this skill executes
+- **custom/openagent-requesting-code-review** - Code review template for reviewer subagents
+- **custom/openagent-finishing-a-development-branch** - Complete development after all tasks
 
 **Subagents should use:**
-- **superpowers:test-driven-development** - Subagents follow TDD for each task
-- Or **custom/openagent-test-driven-development** - If user prefers approval gates in TDD too
+- **custom/openagent-test-driven-development** - Subagents follow TDD with approval gates for each task
 
 **Alternative workflow:**
-- **superpowers:executing-plans** - Use for parallel session instead of same-session execution
+- **custom/openagent-executing-plans** - Use for parallel session instead of same-session execution
 
 ## Common Rationalizations
 

@@ -153,7 +153,7 @@ Ready for feedback.
 
 **After approval:**
 - Announce: "I'm using the finishing-a-development-branch skill to complete this work."
-- **REQUIRED SUB-SKILL:** Use superpowers:finishing-a-development-branch
+- **REQUIRED SUB-SKILL:** Use custom/openagent-finishing-a-development-branch
 - Follow that skill to verify tests, present options, execute choice
 
 ## When to Stop and Ask for Help
@@ -253,13 +253,13 @@ How should I proceed?
 ## Integration
 
 **Required workflow skills:**
-- **superpowers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
-- **superpowers:writing-plans** - Creates the plan this skill executes
-- **superpowers:finishing-a-development-branch** - Complete development after all tasks
+- **custom/openagent-using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
+- **custom/openagent-writing-plans** - Creates the plan this skill executes
+- **custom/openagent-finishing-a-development-branch** - Complete development after all tasks
 
 **Implementation skills referenced in plans:**
-- **custom/openagent-tdd** - TDD implementation with approval gates
-- **custom/openagent-debugging** - Debugging with approval gates
+- **custom/openagent-test-driven-development** - TDD implementation with approval gates
+- **custom/openagent-systematic-debugging** - Debugging with approval gates
 - Other domain-specific skills as specified in plan
 
 ## Final Rule

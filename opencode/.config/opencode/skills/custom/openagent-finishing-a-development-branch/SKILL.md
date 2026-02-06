@@ -1,6 +1,6 @@
 ---
 name: openagent-finishing-a-development-branch
-description: Use when implementation is complete and you need to decide how to integrate the work - wraps superpowers:finishing-a-development-branch with OpenAgent approval gates
+description: Use when implementation is complete and you need to decide how to integrate the work - guides completion with approval gates at each decision point
 ---
 
 # Finishing a Development Branch - OpenAgent Version
@@ -318,8 +318,8 @@ git worktree remove <worktree-path>
 - **executing-plans** (Step 5) - After all batches complete
 
 **Pairs with:**
-- **openagent-git-worktrees** - Cleans up worktree created by that skill
-- **superpowers/verification-before-completion** - Run before this skill
+- **custom/openagent-using-git-worktrees** - Cleans up worktree created by that skill
+- **custom/openagent-verification-before-completion** - Run before this skill
 
 ## Final Rule
 

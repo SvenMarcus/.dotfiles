@@ -5,11 +5,11 @@ description: Use when completing tasks, implementing major features, or before m
 
 # Requesting Code Review - OpenAgent Version
 
-Dispatch superpowers:code-reviewer subagent to catch issues before they cascade. **With approval gates at each phase.**
+Dispatch code-reviewer subagent (using code-reviewer.md template) to catch issues before they cascade. **With approval gates at each phase.**
 
 **Core principle:** Review early, review often.
 
-**OpenAgent integration:** This skill wraps superpowers:requesting-code-review with approval gates that match OpenAgent's safety-first philosophy. You will request approval before dispatching reviewers and before fixing issues.
+**OpenAgent integration:** This skill integrates approval gates at each phase - you will request approval before dispatching reviewers and before fixing issues.
 
 ## When to Request Review
 
@@ -75,7 +75,7 @@ HEAD_SHA=$(git rev-parse HEAD)
 
 **⏸️ REQUEST APPROVAL:** "May I dispatch a code-reviewer subagent to review changes from {BASE_SHA} to {HEAD_SHA}?"
 
-**After approval, use Task tool with superpowers:code-reviewer type:**
+**After approval, use Task tool with code-reviewer template:**
 
 Fill template at `code-reviewer.md`
 
@@ -154,7 +154,7 @@ User: "yes"
 
 You: Dispatching code reviewer...
 
-[Dispatch superpowers:code-reviewer subagent]
+[Dispatch code-reviewer subagent using code-reviewer.md template]
   WHAT_WAS_IMPLEMENTED: Verification and repair functions for conversation index
   PLAN_OR_REQUIREMENTS: Task 2 from docs/plans/deployment-plan.md
   BASE_SHA: a7981ec
