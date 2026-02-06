@@ -22,12 +22,20 @@ This directory contains a complete AI coding agent setup that combines three pow
 │   └── openagent.js                         #   Auto-loads OpenAgent skill routing
 ├── skills/                                   # ← From dotfiles (this repo)
 │   ├── superpowers/ -> ../superpowers/skills #   Superpowers skills (symlink)
-│   └── custom/                              #   OpenAgent approval-gated wrappers
+│   └── custom/                              #   OpenAgent approval-gated versions (12 skills)
 │       ├── openagent-skill-index/           #   Skill routing logic
-│       ├── openagent-brainstorming/         #   Wraps superpowers/brainstorming
-│       ├── openagent-tdd/                   #   Wraps superpowers/test-driven-development
-│       ├── openagent-debugging/             #   Wraps superpowers/systematic-debugging
-│       └── openagent-git-worktrees/         #   Wraps superpowers/using-git-worktrees
+│       ├── openagent-test-driven-development/
+│       ├── openagent-systematic-debugging/
+│       ├── openagent-brainstorming/
+│       ├── openagent-using-git-worktrees/
+│       ├── openagent-writing-plans/
+│       ├── openagent-executing-plans/
+│       ├── openagent-subagent-driven-development/
+│       ├── openagent-finishing-a-development-branch/
+│       ├── openagent-requesting-code-review/
+│       ├── openagent-receiving-code-review/
+│       ├── openagent-verification-before-completion/
+│       └── openagent-dispatching-parallel-agents/
 └── superpowers/                             # ← From dotfiles (git submodule)
     └── (Superpowers framework)              #   Git submodule from obra/superpowers
 ```
@@ -35,6 +43,7 @@ This directory contains a complete AI coding agent setup that combines three pow
 ## What Each System Provides
 
 ### OpenCode (Base Framework)
+
 - Terminal-based AI coding interface
 - Model-agnostic (Claude, GPT, Gemini, local models)
 - Plugin system for extensibility
@@ -42,6 +51,7 @@ This directory contains a complete AI coding agent setup that combines three pow
 - Built-in agents (compaction, summary, etc.)
 
 ### OpenAgentsControl (Agents + Context)
+
 - **OpenAgent** - General-purpose agent with approval gates
 - **OpenCoder** - Production development agent (Discover → Propose → Approve → Execute)
 - **Specialized subagents** - ContextScout, TaskManager, CodeReviewer, etc.
@@ -50,6 +60,7 @@ This directory contains a complete AI coding agent setup that combines three pow
 - **Approval-first workflow** - You review plans before execution
 
 ### Superpowers (Skills Framework)
+
 - **using-superpowers** - Bootstrap skill that enforces skill-checking discipline
 - **test-driven-development** - TDD workflow (RED → GREEN → REFACTOR)
 - **systematic-debugging** - Debug workflow (Isolate → Hypothesize → Test → Fix)
@@ -58,6 +69,7 @@ This directory contains a complete AI coding agent setup that combines three pow
 - **Plus 10+ more skills** - Code review, planning, execution, etc.
 
 ### Our Custom Integration (This Repo)
+
 - **Plugins** - Auto-inject Superpowers + OpenAgent routing
 - **Custom skills** - Approval-gated wrappers around Superpowers workflows
 - **Stow integration** - Overlay configuration on top of OpenAgentsControl
@@ -76,6 +88,7 @@ cd ~/.dotfiles
 ```
 
 The bootstrap script will:
+
 1. ✅ Install OpenCode via Homebrew
 2. ✅ Install OpenAgentsControl (agents, commands, context)
 3. ✅ Initialize Superpowers git submodule
@@ -154,6 +167,7 @@ opencode --agent OpenAgent
 ```
 
 Answer 6 questions:
+
 1. Tech stack? (Next.js + TypeScript + PostgreSQL)
 2. API endpoint example? (paste your code)
 3. Component example? (paste your code)
@@ -166,12 +180,14 @@ Answer 6 questions:
 ## Skill Auto-Loading
 
 **Superpowers Plugin** injects bootstrap content that tells agents:
+
 - "You have superpowers"
 - "Check for skills BEFORE any response"
 - "Even a 1% chance a skill applies → invoke it"
 
 **OpenAgent Plugin** adds routing logic that tells agents:
-- "Prefer custom/openagent-* skills over superpowers/*"
+
+- "Prefer custom/openagent-*skills over superpowers/*"
 - "OpenAgent skills add approval gates"
 - "Follow approval-first workflow"
 
@@ -201,7 +217,7 @@ opencode --agent OpenCoder
    - Executes step-by-step with validation
 
 4. **Automatic Workflows**
-   - Uses `custom/openagent-tdd` for implementation
+   - Uses `custom/openagent-test-driven-development` for implementation
    - Red → Green → Refactor cycle with approval gates
    - CodeReviewer validates security
 
@@ -212,59 +228,192 @@ opencode --agent OpenCoder
 
 ## OpenAgent Custom Skills
 
-These skills wrap Superpowers workflows with OpenAgent's approval-first approach:
+These skills are **standalone versions** of Superpowers workflows with integrated approval gates at each phase. They're not simple wrappers - they contain the complete workflow with approval checkpoints embedded throughout.
 
-### openagent-brainstorming
-Use before creative work - wraps `superpowers:brainstorming` with approval gates
+### Tier 1: Core Development Workflows (8 skills)
 
-**Workflow**:
-1. Request approval to start brainstorming
-2. Ask questions one at a time to refine idea
-3. Explore 2-3 alternative approaches
-4. Present design in sections (200-300 words each)
-5. Request approval to save design doc
-6. Request approval for implementation setup
+#### openagent-test-driven-development
 
-### openagent-tdd
-Use when implementing features/bugfixes - wraps `superpowers:test-driven-development` with approval gates
+Use when implementing features/bugfixes - complete TDD workflow with approval gates
 
 **Workflow**:
-1. Request approval to start TDD
-2. Write failing test (RED)
-3. Verify test fails correctly
-4. Request approval to write code
-5. Write minimal code (GREEN)
-6. Verify tests pass
-7. Refactor (optional)
-8. Request approval to commit
 
-**Key Difference**: Won't auto-delete non-TDD code - requests permission first
+1. ⏸️ Request approval to write failing test (RED)
+2. Write test, verify it fails correctly
+3. ⏸️ Report failure, request approval to implement
+4. Write minimal code (GREEN)
+5. Verify tests pass
+6. ⏸️ Report success, request approval to refactor (optional)
+7. ⏸️ Request approval to commit
 
-### openagent-debugging
-Use for any bug/test failure - wraps `superpowers:systematic-debugging` with approval gates
+**Key Difference**: Requests permission at each phase instead of auto-executing
 
-**Workflow**:
-1. Request approval to investigate
-2. Phase 1: Root cause investigation
-3. Phase 2: Pattern analysis
-4. Phase 3: Hypothesis and testing
-5. Phase 4: Implementation with test
-6. Stops at 3 failed fixes to question architecture
+#### openagent-systematic-debugging
 
-**Key Difference**: Reports at each phase, requests approval before fixes
-
-### openagent-git-worktrees
-Use when starting feature work - wraps `superpowers:using-git-worktrees` with approval gates
+Use for any bug/test failure - 4-phase debugging with approval gates
 
 **Workflow**:
-1. Request approval to create worktree
-2. Follow directory priority: existing > CLAUDE.md > ask
-3. Verify .gitignore includes worktree directory
-4. Request approval to modify .gitignore if needed
-5. Create worktree, run setup, verify baseline tests
-6. Report if tests fail, ask for guidance
 
-**Key Difference**: Won't auto-modify .gitignore or proceed with failing tests - requests permission
+1. ⏸️ Request approval to investigate
+2. Phase 1: Root cause investigation → ⏸️ Report findings
+3. ⏸️ Request approval for Phase 2: Pattern analysis → ⏸️ Report patterns
+4. ⏸️ Request approval for Phase 3: Hypothesis testing → ⏸️ Report results
+5. ⏸️ Request approval for Phase 4: Implementation → ⏸️ Report fix
+
+**Key Difference**: Reports at each phase, stops for user input
+
+#### openagent-brainstorming
+
+Use before creative work - design exploration with approval gates
+
+**Workflow**:
+
+1. ⏸️ Request approval to explore project context
+2. ⏸️ Request approval to ask questions (one at a time)
+3. ⏸️ Request approval to propose 2-3 approaches
+4. ⏸️ Request approval to present design sections
+5. ⏸️ Request approval to save design document
+6. ⏸️ Request approval to commit design doc
+7. ⏸️ Request approval for implementation setup
+
+**Key Difference**: User controls when design moves to implementation
+
+#### openagent-using-git-worktrees
+
+Use when starting feature work - isolated workspace with approval gates
+
+**Workflow**:
+
+1. ⏸️ Request approval to check directories
+2. ⏸️ Report directory found/chosen
+3. ⏸️ Request approval to modify .gitignore (if needed)
+4. ⏸️ Request approval to create worktree
+5. ⏸️ Request approval to run project setup
+6. ⏸️ Report baseline test results
+
+**Key Difference**: Won't auto-modify .gitignore or create worktree without permission
+
+#### openagent-writing-plans
+
+Use when planning multi-step tasks - implementation planning with approval gates
+
+**Workflow**:
+
+1. ⏸️ Request approval to explore codebase
+2. ⏸️ Request approval to write plan
+3. ⏸️ Report plan complete, request review
+4. ⏸️ Request approval to save plan file
+5. ⏸️ Request approval to commit plan
+6. ⏸️ Request approval before offering execution choice
+
+**Key Difference**: User reviews plan before it's saved
+
+#### openagent-executing-plans
+
+Use for executing written plans - batch execution with approval gates
+
+**Workflow**:
+
+1. ⏸️ Request approval to load plan (report any concerns)
+2. ⏸️ Request approval to execute batch N (3 tasks default)
+3. ⏸️ Report batch complete, wait for feedback
+4. ⏸️ Request approval to apply feedback changes
+5. Repeat until complete
+6. ⏸️ Request approval to finish branch
+
+**Key Difference**: No auto-batching - user sees progress at each batch
+
+#### openagent-subagent-driven-development
+
+Use for executing plans with subagents - subagent workflows with approval gates
+
+**Workflow**:
+
+1. ⏸️ Request approval to read plan and create TodoWrite
+2. ⏸️ Request approval to dispatch implementer subagent (per task)
+3. ⏸️ Request approval to dispatch spec reviewer subagent
+4. ⏸️ Request approval to dispatch code quality reviewer
+5. ⏸️ Request approval to move to next task
+6. ⏸️ Request approval for final code review
+7. ⏸️ Request approval to finish branch
+
+**Key Difference**: User maintains control throughout automated workflow
+
+#### openagent-finishing-a-development-branch
+
+Use when implementation complete - branch completion with approval gates
+
+**Workflow**:
+
+1. ⏸️ Request approval to verify tests
+2. ⏸️ Report test results (pass/fail)
+3. ⏸️ Request approval to present 4 options (if tests pass)
+4. User chooses: Merge locally, Push & PR, Keep as-is, or Discard
+5. ⏸️ Request approval to execute chosen option
+6. ⏸️ Request approval for worktree cleanup
+
+**Key Difference**: User explicitly chooses merge strategy
+
+### Tier 2: Code Quality & Review (4 skills)
+
+#### openagent-requesting-code-review
+
+Use when completing tasks - code review requests with approval gates
+
+**Workflow**:
+
+1. ⏸️ Request approval to get git SHAs
+2. ⏸️ Request approval to dispatch code-reviewer subagent
+3. ⏸️ Report feedback from reviewer
+4. ⏸️ Request approval to fix Critical issues
+5. ⏸️ Request approval to fix Important issues
+6. ⏸️ Request approval to proceed to next task
+
+**Key Difference**: User sees review feedback before fixes applied
+
+#### openagent-receiving-code-review
+
+Use when receiving feedback - review response with approval gates
+
+**Workflow**:
+
+1. ⏸️ Report understanding of feedback
+2. ⏸️ Request approval to ask clarifying questions (if unclear)
+3. ⏸️ Request approval to implement changes
+4. ⏸️ Request approval to test each fix
+5. ⏸️ Report implementation complete
+
+**Key Difference**: Preserves anti-performative stance ("no 'You're absolutely right!'") while adding approval gates
+
+#### openagent-verification-before-completion
+
+Use before claiming completion - evidence-based completion with approval gates
+
+**Workflow**:
+
+1. ⏸️ Request approval to run verification command
+2. Run verification, capture full output
+3. ⏸️ Report evidence (actual output, exit code, failures)
+4. ⏸️ Request approval to claim success (only if evidence supports it)
+5. ⏸️ Request approval before commit/PR
+
+**Key Difference**: Forces "evidence before claims" with approval checkpoints
+
+#### openagent-dispatching-parallel-agents
+
+Use for multiple independent failures - parallel dispatch with approval gates
+
+**Workflow**:
+
+1. ⏸️ Request approval to identify independent domains
+2. ⏸️ Request approval to create agent tasks (review scope)
+3. ⏸️ Request approval to dispatch agents in parallel
+4. ⏸️ Report agent summaries when complete
+5. ⏸️ Request approval to integrate changes
+6. ⏸️ Request approval to run full test suite
+7. ⏸️ Report verification results
+
+**Key Difference**: User approves parallel dispatch strategy before execution
 
 ## Using Skills
 
@@ -277,7 +426,7 @@ use skill tool to load superpowers/brainstorming
 ### Load an OpenAgent Skill
 
 ```
-use skill tool to load custom/openagent-tdd
+use skill tool to load custom/openagent-test-driven-development
 ```
 
 ### List Available Skills
@@ -335,6 +484,7 @@ The skill will be automatically available after restart or when stowed.
 **OpenAgent**: Approval-first execution with safety gates
 
 **This Integration**: Best of both worlds
+
 - Superpowers' structured methodologies (TDD, systematic debugging, brainstorming)
 - OpenAgent's safety approach (approval gates, report-first, stop-on-failure)
 
@@ -374,6 +524,7 @@ opencode --agent OpenAgent
 ```
 
 Agent should:
+
 1. ✅ Automatically detect task type
 2. ✅ Load appropriate skill (brainstorming/TDD)
 3. ✅ Request approval before execution
@@ -384,12 +535,14 @@ Agent should:
 ### Superpowers Skills Not Loading
 
 Check symlink:
+
 ```bash
 ls -la ~/.config/opencode/skills/superpowers
 # Should point to: ../superpowers/skills
 ```
 
 Reinitialize submodule:
+
 ```bash
 cd ~/.dotfiles
 git submodule update --init --recursive
@@ -399,6 +552,7 @@ stow opencode
 ### OpenAgentsControl Commands Missing
 
 Reinstall OpenAgentsControl:
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/darrenhinde/OpenAgentsControl/main/install.sh | \
   bash -s developer --install-dir ~/.config/opencode
@@ -407,12 +561,14 @@ curl -fsSL https://raw.githubusercontent.com/darrenhinde/OpenAgentsControl/main/
 ### Plugins Not Loading
 
 Check plugin files exist:
+
 ```bash
 ls ~/.config/opencode/plugins/
 # Should show: superpowers.js, openagent.js
 ```
 
 Restow:
+
 ```bash
 cd ~/.dotfiles
 stow opencode
