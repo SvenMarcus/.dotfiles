@@ -3,6 +3,7 @@ eval "$(mise activate zsh)"
 
 source $HOME/.devcontainer.sh
 
+export EDITOR="nvim"
 
 # Created by `pipx` on 2023-03-17 15:08:28
 export PATH="$PATH:/Users/marcus/.local/bin"
