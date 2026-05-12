@@ -1,0 +1,26 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "ollama": {
+      "models": {
+        "qwen3-coder-next:q8_0": {
+          "_launch": true,
+          "name": "qwen3-coder-next:q8_0"
+        },
+        "qwen2.5-coder:7b": {
+          "_launch": true,
+          "name": "qwen2.5-coder:7b"
+        },
+        "qwen3-coder-next:q4_K_M": {
+          "_launch": true,
+          "name": "qwen3-coder-next:q4_K_M"
+        }
+      },
+      "name": "Ollama (ki-biblio)",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "http://ki-biblio.biblio.etc.tu-bs.de:11434/v1"
+      }
+    }
+  }
+}
