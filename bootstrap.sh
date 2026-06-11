@@ -39,9 +39,9 @@ touch ~/.config/lazygit/config.yml
 # ensure that there is no conflicting zshrc
 rm ~/.zshrc
 
-# Install OpenAgentsControl (default agents, commands, and context system)
-echo "Installing OpenAgentsControl..."
-curl -fsSL https://raw.githubusercontent.com/darrenhinde/OpenAgentsControl/main/install.sh | bash -s developer --install-dir ~/.config/opencode
+# # Install OpenAgentsControl (default agents, commands, and context system)
+# echo "Installing OpenAgentsControl..."
+# curl -fsSL https://raw.githubusercontent.com/darrenhinde/OpenAgentsControl/main/install.sh | bash -s developer --install-dir ~/.config/opencode
 
 cd ~/.dotfiles
 
