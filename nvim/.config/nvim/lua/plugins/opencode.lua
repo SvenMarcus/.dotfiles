@@ -1,3 +1,13 @@
+local opencode_cmd = "opencode --port --agent OpenAgent"
+
+---@type snacks.terminal.Opts
+local snacks_terminal_opts = {
+  win = {
+    position = "right",
+    enter = false,
+  },
+}
+
 return {
   "NickvanDyke/opencode.nvim",
   dependencies = {
@@ -25,18 +35,6 @@ return {
     },
   },
   config = function()
-    local opencode_cmd = "opencode --port --agent OpenAgent"
-    ---@type snacks.terminal.Opts
-    local snacks_terminal_opts = {
-      win = {
-        position = "right",
-        enter = false,
-        on_win = function(win)
-          -- Set up keymaps and cleanup for an arbitrary terminal
-          require("opencode.terminal").setup(win.win)
-        end,
-      },
-    }
     ---@type opencode.Opts
     vim.g.opencode_opts = {
       server = {
@@ -77,9 +75,9 @@ return {
       mode = "v",
     },
     {
-      "<leader>ot",
+      "<C-.>",
       function()
-        require("opencode").toggle()
+        require("snacks.terminal").toggle(opencode_cmd, snacks_terminal_opts)
       end,
       desc = "Toggle embedded opencode",
     },
