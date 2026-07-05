@@ -8,19 +8,14 @@
         "baseURL": "http://ki-biblio.biblio.etc.tu-bs.de:11434/v1"
       },
       "models": {
+        "gemma-4-31B-it:Q4QAT": { "name": "gemma-4-31B-it:Q4QAT" },
+        "North-Mini-Code-1.0:Q6": { "name": "North-Mini-Code-1.0:Q6" },
         "Qwen/Qwen3.6-27B-FP8": {
           "name": "vllm/Qwen/Qwen3.6-27B-FP8",
-          "options": {
-            "temperature": 0.6
-          }
+          "options": { "temperature": 0.6 }
         },
-        "gemma-4-31B-it:Q6": {
-          "name": "gemma-4-31B-it:Q6"
-        },
+        "DeepSeek-V4-Flash": { "name": "vllm/DeepSeek-V4-Flash" }
       }
     }
-  },
-  "plugin": [
-    "superpowers@git+https://github.com/obra/superpowers.git"
-  ]
+  }
 }
