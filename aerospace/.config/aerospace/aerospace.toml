@@ -232,3 +232,24 @@ run = ["layout floating"]
 [[on-window-detected]]
 if.app-id = "com.cisco.anyconnect.gui"
 run = ["layout floating"]
+
+[[on-window-detected]]
+if.app-id = "com.apple.mail"
+run = "move-node-to-workspace 7"
+
+[[on-window-detected]]
+if.app-id = "Cisco-Systems.Spark"
+run = "move-node-to-workspace 9"
+
+[[on-window-detected]]
+if.app-id = "im.riot.app"
+run = "move-node-to-workspace 9"
+
+[[on-window-detected]]
+if.app-id = "com.mitchellh.ghostty"
+run = "move-node-to-workspace 1"
+
+[[on-window-detected]]
+if.app-id = "company.thebrowser.Browser"
+run = "move-node-to-workspace 2"
+
