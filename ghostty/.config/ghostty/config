@@ -3,7 +3,11 @@ font-family = "JetBrainsMono Nerd Font"
 font-style = "SemiBold"
 font-size = 22
 
-background-opacity = 0.9
-background-blur = true
+# background-opacity = 0.9
+# background-blur = true
 
-macos-titlebar-style = "hidden"
+# macos-titlebar-style = "hidden"
+#
+
+keybind = super+ö=goto_split:previous
+keybind = super+ä=goto_split:next
