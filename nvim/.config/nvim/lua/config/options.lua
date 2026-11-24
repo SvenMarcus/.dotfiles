@@ -10,3 +10,6 @@ vim.opt.cursorline = false
 
 -- disable snacks animation, because they sometimes cause text rendering issues (bleeding) in devcontainers
 vim.g.snacks_animate = true
+
+-- Use pyrefly (https://pyrefly.org) as the default Python language server.
+vim.g.lazyvim_python_lsp = "pyrefly"
