@@ -13,3 +13,8 @@ vim.g.snacks_animate = true
 
 -- Use pyrefly (https://pyrefly.org) as the default Python language server.
 vim.g.lazyvim_python_lsp = "pyrefly"
+
+-- disable termsync in tuios sessions as it sometimes causes screen flickering
+if vim.env.TUIOS_SESSION ~= nil or vim.env.TERM_PROGRAM == "tuios" then
+  vim.opt.termsync = false
+end
